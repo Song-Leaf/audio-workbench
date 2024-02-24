@@ -1,30 +1,47 @@
-import Link from "next/link"
-
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export default function IndexPage() {
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
+    <section className="grid items-center gap-2 pb-8 pt-2 md:py-1">
       <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          Beautifully designed components <br className="hidden sm:inline" />
-          built with Radix UI and Tailwind CSS.
-        </h1>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
+        <p className="max-w-[700px] text-sm text-foreground">Audio examples</p>
       </div>
       <div className="flex gap-4">
-        <Link
-          target="_blank"
-          rel="noreferrer"
-          href={siteConfig.links.github}
-          className={buttonVariants({ variant: "outline" })}
-        >
-          GitHub
-        </Link>
+        <Select>
+          <SelectTrigger className="w-[180px]" defaultValue="acoustic">
+            <SelectValue placeholder="Example" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Music</SelectLabel>
+              <SelectItem value="acoustic">Acoustic</SelectItem>
+              <SelectItem value="paino">Piano</SelectItem>
+              <SelectItem value="metal">Metal</SelectItem>
+              <SelectItem value="rock">Rock</SelectItem>
+              <SelectItem value="hipHop">Hip Hop</SelectItem>
+              <SelectItem value="lofi">LoFi</SelectItem>
+            </SelectGroup>
+            <SelectGroup>
+              <SelectLabel>Ambience</SelectLabel>
+              <SelectItem value="forestRain">Forest Rain</SelectItem>
+              <SelectItem value="oceanWaves">Ocean Waves</SelectItem>
+              <SelectItem value="cityRooftop">City Rooftop</SelectItem>
+            </SelectGroup>
+            {/* <SelectGroup>
+              <SelectLabel>Voice</SelectLabel>
+              <SelectItem value="podcast">Podcast</SelectItem>
+              <SelectItem value="radio">Radio</SelectItem>
+            </SelectGroup> */}
+          </SelectContent>
+        </Select>
       </div>
     </section>
   )

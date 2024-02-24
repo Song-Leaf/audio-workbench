@@ -44,7 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="relative flex h-full flex-col">
               <SiteHeader />
-              <div className="grid h-full lg:grid-cols-5">
+              <div className="grid h-full lg:grid-cols-8">
                 <Sidebar className="hidden lg:block" />
                 <div className="col-span-3 lg:col-span-4 lg:border-l">
                   <div className="h-full px-4 py-6 lg:px-8">{children}</div>
