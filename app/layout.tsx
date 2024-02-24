@@ -37,14 +37,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <head />
         <body
           className={cn(
-            "min-h-screen bg-background font-sans antialiased",
+            "h-full min-h-screen bg-background font-sans antialiased",
             fontSans.variable
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className="relative flex min-h-screen flex-col">
+            <div className="relative flex h-full flex-col">
               <SiteHeader />
-              <div className="grid lg:grid-cols-5">
+              <div className="grid h-full lg:grid-cols-5">
                 <Sidebar className="hidden lg:block" />
                 <div className="col-span-3 lg:col-span-4 lg:border-l">
                   <div className="h-full px-4 py-6 lg:px-8">{children}</div>
