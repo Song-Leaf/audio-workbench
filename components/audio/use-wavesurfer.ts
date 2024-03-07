@@ -8,9 +8,11 @@ export type OnRecordEndFn = (result?: { blob: Blob; url: string }) => void
 
 export const useWavesurfer = (
   containerRef: MutableRefObject<HTMLElement | null>,
-  options: Omit<WaveSurferOptions, "container">
-) => {
+  url: string,
+  options: Omit<WaveSurferOptions, "container" | "url">
+): [WaveSurfer | null, boolean] => {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null)
+  const [error, setError] = useState<boolean>(false)
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
@@ -22,14 +24,19 @@ export const useWavesurfer = (
       container: containerRef.current,
     })
 
+    ws.load(url).catch((e: Error) => {
+      setError(true)
+      console.error("Failed to load audio", e)
+    })
+
     setWavesurfer(ws)
 
     return () => {
       ws.destroy()
     }
-  }, [options.url, containerRef])
+  }, [url, containerRef, options])
 
-  return wavesurfer
+  return [wavesurfer, error]
 }
 
 export const useWavesurferRecorder = (

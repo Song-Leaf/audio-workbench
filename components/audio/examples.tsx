@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 
-import { getOptionFilenames } from "@/lib/audio"
+import { getAudioExample } from "@/lib/audio"
+import { AudioExample } from "@/lib/audio.types"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -14,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+import { Separator } from "../ui/separator"
 import { AudioPlayerSimple } from "./audio-player-simple"
 
 // import { ScrollArea } from "@/components/ui/scroll-area"
@@ -22,7 +24,7 @@ interface ExamplesProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function ExamplesList({ className }: ExamplesProps) {
   const [option, setOption] = useState("acoustic")
-  const examples = getOptionFilenames(option)
+  const examples = getAudioExample(option)
 
   return (
     <div>
@@ -59,15 +61,9 @@ export function ExamplesList({ className }: ExamplesProps) {
           </SelectContent>
         </Select>
       </div>
-      <div>
-        {examples.map((e, i) => (
-          <Example
-            key={`example-${i}`}
-            example={{
-              name: option,
-              ...e,
-            }}
-          />
+      <div className="py-4">
+        {examples.slice(1, 2).map((e, i) => (
+          <Example key={e.path} example={e} />
         ))}
       </div>
     </div>
@@ -75,25 +71,62 @@ export function ExamplesList({ className }: ExamplesProps) {
 }
 
 interface ExampleProps {
-  example: {
-    name: string
-    path: string
-    type: string
-  }
+  example: AudioExample
 }
 function Example({ example }: ExampleProps) {
   return (
-    <div>
+    <div className="py-1">
       {/* type */}
 
-      <div>{example.type}</div>
+      <div className="flex items-center space-x-2">
+        <p className="text-sm">{example.type}</p>
+        <p className="text-xs">{example.path}</p>
+      </div>
 
-      <AudioPlayerSimple url={example.path} />
+      <div className="rounded-md border border-slate-200 p-1 pr-2">
+        <AudioPlayerSimple url={example.fullPath} />
 
-      {/* audio player */}
-      {/* <audio controls src={example.path} /> */}
+        <Separator className="mt-1" />
+        <div className="pb-1 pt-2">
+          <div className="flex h-4 items-center justify-between space-x-1 text-xs">
+            <p>{example.compression}</p>
 
-      {/* compatibility grid */}
+            <Separator orientation="vertical" decorative />
+
+            <p>{example.bitDepth}</p>
+
+            <Separator orientation="vertical" />
+
+            <p>{example.sampleRate}</p>
+
+            <Separator orientation="vertical" />
+
+            <p>{JSON.stringify(example.browserCompatibility)}</p>
+
+            <Separator orientation="vertical" />
+
+            <p>
+              {example.moreInfo?.map(({ url, label }) => (
+                <a key={url} href={url} target="_blank" rel="noreferrer">
+                  {label}
+                </a>
+              ))}
+            </p>
+          </div>
+        </div>
+
+        {/* compatibility grid */}
+        {/* 
+        type
+        file extension
+        compression - none, lossy, lossless
+        bit depth?
+        sample rate?
+        browser compatibility
+        links to more info
+
+      */}
+      </div>
     </div>
   )
 }

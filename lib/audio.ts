@@ -1,3 +1,6 @@
+import audioData from "./audio.data"
+import { AudioExample } from "./audio.types"
+
 const originalAudio = {
   filetype: "wav",
   sampleRate: 48000,
@@ -28,19 +31,11 @@ export const filetypes = [
   "wav",
 ]
 
-export const getOptionFilenames = (option: string) => {
+export const getAudioExample = (option: string): AudioExample[] => {
   const category = musicOptions.includes(option) ? "music" : "ambience"
-  return filetypes.map((t) => {
-    let filename = `${option}.${t}`
-    if (t === "m4a/alac") {
-      filename = `${option}-lossless.m4a`
-    } else if (t === "m4a/aac") {
-      filename = `${option}-lossy.m4a`
-    }
-    return {
-      path: `/audio/${category}/${option}/${filename}`,
-      type: t,
-    }
+  return audioData[category][option].map((d) => {
+    d.fullPath = `/audio/${category}/${option}/${d.path}`
+    return d as AudioExample
   })
 }
 

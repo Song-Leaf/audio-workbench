@@ -7,7 +7,7 @@ import { useWavesurfer } from "./use-wavesurfer"
 import { formatTime } from "./utils"
 
 export interface AudioPlayerSimpleProps {
-  url?: string
+  url: string
   loading?: boolean
 }
 
@@ -18,7 +18,7 @@ const initialOptions = {
   cursorColor: "#36EA73",
   cursorWidth: 2,
   barWidth: 2,
-  barGap: 2,
+  barGap: 4,
   barRadius: 2,
   barHeight: 0.9,
   normalize: false,
@@ -36,7 +36,7 @@ export const AudioPlayerSimple: React.FC<AudioPlayerSimpleProps> = ({
   loading,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const wavesurfer = useWavesurfer(containerRef, { ...initialOptions, url })
+  const [wavesurfer, error] = useWavesurfer(containerRef, url, initialOptions)
 
   const [isPlaying, setIsPlaying] = useState(false)
   const [ready, setReady] = useState(false)
@@ -74,13 +74,26 @@ export const AudioPlayerSimple: React.FC<AudioPlayerSimpleProps> = ({
           onClick={onTogglePlaying}
           disabled={(wavesurfer && !ready) || loading}
         >
-          {(wavesurfer && !ready) || loading ? (
-            <Loader className="fill-surface-base size-4" />
-          ) : isPlaying ? (
-            <PauseIcon className="size-4" />
-          ) : (
-            <PlayIcon className="size-3" />
-          )}
+          {(() => {
+            switch (true) {
+              case error:
+                return (
+                  <div className="size-4 fill-neutral-400 stroke-neutral-400">
+                    Error
+                  </div>
+                )
+              case (wavesurfer && !ready) || loading:
+                return <Loader className="fill-surface-base size-4" />
+              case isPlaying:
+                return (
+                  <PauseIcon className="size-4 fill-neutral-400 stroke-neutral-400" />
+                )
+              default:
+                return (
+                  <PlayIcon className="size-4 fill-neutral-400 stroke-neutral-400" />
+                )
+            }
+          })()}
         </button>
         {url ? (
           <div
@@ -117,7 +130,7 @@ const PlayerTime: React.FC<PlayerTimeProps> = ({ wavesurfer }) => {
   }, [wavesurfer])
 
   return (
-    <p className="text-text-secondary w-full max-w-[32px] text-sm font-medium">
+    <p className="w-full max-w-[34px] text-xs font-semibold text-neutral-400">
       {formatTime(currentTime)}
     </p>
   )
