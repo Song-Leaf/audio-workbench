@@ -1,43 +1,50 @@
+const originalAudio = {
+  filetype: "wav",
+  sampleRate: 48000,
+  bitDepth: 24,
+}
+
+export const musicOptions = [
+  "acoustic",
+  "piano",
+  "metal",
+  "rock",
+  "hiphop",
+  "lofi",
+]
+
+export const ambienceOptions = ["forestRain", "oceanWaves", "cityRooftop"]
+
+export const filetypes = [
+  "m4a/alac",
+  "m4a/aac",
+  "aac",
+  "caf",
+  "flac",
+  "mp3",
+  "mp4",
+  "ogg",
+  "opus",
+  "wav",
+]
+
+export const getOptionFilenames = (option: string) => {
+  const category = musicOptions.includes(option) ? "music" : "ambience"
+  return filetypes.map((t) => {
+    let filename = `${option}.${t}`
+    if (t === "m4a/alac") {
+      filename = `${option}-lossless.m4a`
+    } else if (t === "m4a/aac") {
+      filename = `${option}-lossy.m4a`
+    }
+    return {
+      path: `/audio/${category}/${option}/${filename}`,
+      type: t,
+    }
+  })
+}
+
 export const audio = {
-  music: {
-    acoustic: {
-      title: "Acoustic",
-      mp3: "/audio/acoustic.mp3",
-      wav: "/audio/acoustic.wav",
-    },
-    piano: {
-      title: "Piano",
-      src: "/audio/piano.mp3",
-    },
-    metal: {
-      title: "Metal",
-      src: "/audio/metal.mp3",
-    },
-    rock: {
-      title: "Rock",
-      src: "/audio/rock.mp3",
-    },
-    hipHop: {
-      title: "Hip Hop",
-      src: "/audio/hip-hop.mp3",
-    },
-    lofi: {
-      title: "LoFi",
-      src: "/audio/lofi.mp3",
-    },
-  },
-  ambience: {
-    forestRain: {
-      title: "Forest Rain",
-      src: "/audio/forest-rain.mp3",
-    },
-    oceanWaves: {
-      title: "Ocean Waves",
-      src: "/audio/ocean-waves.mp3",
-    },
-    cityRooftop: {
-      title: "City Rooftop",
-      src: "/audio/ocean-waves.mp3",
-    },
-  },
+  music: musicOptions,
+  ambience: ambienceOptions,
 }
