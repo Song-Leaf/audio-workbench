@@ -17,6 +17,7 @@ import {
 
 import { Separator } from "../ui/separator"
 import { AudioPlayerSimple } from "./audio-player-simple"
+import { getFileSize, getkHz } from "./utils"
 
 // import { ScrollArea } from "@/components/ui/scroll-area"
 
@@ -62,7 +63,7 @@ export function ExamplesList({ className }: ExamplesProps) {
         </Select>
       </div>
       <div className="py-4">
-        {examples.slice(1, 2).map((e, i) => (
+        {examples.map((e, i) => (
           <Example key={e.path} example={e} />
         ))}
       </div>
@@ -76,42 +77,83 @@ interface ExampleProps {
 function Example({ example }: ExampleProps) {
   return (
     <div className="py-1">
-      {/* type */}
-
-      <div className="flex items-center space-x-2">
-        <p className="text-sm">{example.type}</p>
-        <p className="text-xs">{example.path}</p>
-      </div>
-
-      <div className="rounded-md border border-slate-200 p-1 pr-2">
+      <div className="rounded-md border border-border p-1 pr-2">
+        <div className="flex items-center space-x-2 p-1">
+          <p className="text-sm font-semibold">{example.path}</p>
+        </div>
         <AudioPlayerSimple url={example.fullPath} />
 
         <Separator className="mt-1" />
         <div className="pb-1 pt-2">
-          <div className="flex h-4 items-center justify-between space-x-1 text-xs">
-            <p>{example.compression}</p>
+          <div className="flex h-7 items-center justify-between space-x-1 text-xs">
+            <div className="flex-1 text-center">
+              <p>{example.type}</p>
+            </div>
+
+            <Separator orientation="vertical" decorative />
+            <div className="flex-1 text-center">
+              <p>{getFileSize(example.fileSize)}</p>
+            </div>
 
             <Separator orientation="vertical" decorative />
 
-            <p>{example.bitDepth}</p>
+            <div className="flex-1 text-center">
+              <p>{example.compression}</p>
+            </div>
+
+            <Separator orientation="vertical" decorative />
+
+            <div className="flex-1 text-center">
+              <p>{example.bitDepth} Bit</p>
+            </div>
+
+            <Separator orientation="vertical" />
+            <div className="flex-1 text-center">
+              <p>{getkHz(example.sampleRate)}</p>
+            </div>
 
             <Separator orientation="vertical" />
 
-            <p>{example.sampleRate}</p>
+            <div className="flex-[6_1_0%] text-center">
+              <p>{JSON.stringify(example.browserCompatibility)}</p>
+
+              <label className="text-xxxs">Browser Compatibility</label>
+            </div>
 
             <Separator orientation="vertical" />
 
-            <p>{JSON.stringify(example.browserCompatibility)}</p>
+            <div className="flex-1 text-center">
+              <p>
+                {example.moreInfo?.map(({ url, label }) => (
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-secondary-foreground underline"
+                  >
+                    {label}
 
-            <Separator orientation="vertical" />
-
-            <p>
-              {example.moreInfo?.map(({ url, label }) => (
-                <a key={url} href={url} target="_blank" rel="noreferrer">
-                  {label}
-                </a>
-              ))}
-            </p>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="ml-1 inline-block size-2"
+                    >
+                      <path d="M15 3h6v6" />
+                      <path d="M10 14 21 3" />
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    </svg>
+                  </a>
+                ))}
+              </p>
+            </div>
           </div>
         </div>
 

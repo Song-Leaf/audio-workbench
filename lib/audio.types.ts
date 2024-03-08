@@ -4,8 +4,16 @@ export interface AudioExample {
   fullPath: string
   type: string
   compression: "lossless" | "lossy" | "none"
-  bitDepth: number
+  bitDepth?: number
+  /**
+   * Bitrate in kbps
+   */
+  bitRate?: number
   sampleRate: number
+  /**
+   * File size in bytes
+   */
+  fileSize: number
   browserCompatibility: {
     chrome?: string
     firefox?: string
