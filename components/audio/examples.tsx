@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import cs from "classnames"
 
 import { getAudioExample } from "@/lib/audio"
 import { AudioExample } from "@/lib/audio.types"
@@ -103,8 +104,15 @@ function Example({ example }: ExampleProps) {
 
             <Separator orientation="vertical" decorative />
 
-            <div className="flex-1 text-center">
-              <p>{example.bitDepth} Bit</p>
+            <div
+              className={cs("text-center", {
+                "flex items-center justify-center space-x-4 flex-[2_2_0%]":
+                  example.bitDepth && example.bitRate,
+                "flex-1": !example.bitDepth || !example.bitRate,
+              })}
+            >
+              {example.bitDepth && <p>{example.bitDepth} Bit</p>}
+              {example.bitRate && <p>{example.bitRate} kb/s</p>}
             </div>
 
             <Separator orientation="vertical" />
