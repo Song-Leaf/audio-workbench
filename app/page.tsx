@@ -9,8 +9,8 @@ export default function IndexPage() {
         <br />
         <p className="text-sm">
           This is a collection of audio interactions on the web. The aim is to
-          provide a clear viewpoint into developing web applications that use
-          audio.
+          provide a clear view into what is needed for developing web
+          applications that use audio.
         </p>
         <br />
         <h2 className="font-bold">Playback</h2>
