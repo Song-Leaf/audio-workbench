@@ -25,13 +25,13 @@ import { getFileSize, getkHz } from "./utils"
 interface ExamplesProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function ExamplesList({ className }: ExamplesProps) {
-  const [option, setOption] = useState("acoustic")
+  const [option] = useState("acoustic")
   const examples = getAudioExample(option)
 
   return (
     <div>
       <div className="flex gap-4">
-        <Select
+        {/* <Select
           defaultValue="acoustic"
           onValueChange={setOption}
           value={option}
@@ -55,13 +55,13 @@ export function ExamplesList({ className }: ExamplesProps) {
               <SelectItem value="oceanWaves">Ocean Waves</SelectItem>
               <SelectItem value="cityRooftop">City Rooftop</SelectItem>
             </SelectGroup>
-            {/* <SelectGroup>
+            <SelectGroup>
               <SelectLabel>Voice</SelectLabel>
               <SelectItem value="podcast">Podcast</SelectItem>
               <SelectItem value="radio">Radio</SelectItem>
-            </SelectGroup> */}
+            </SelectGroup> 
           </SelectContent>
-        </Select>
+        </Select> */}
       </div>
       <div className="py-4">
         {examples.map((e, i) => (
@@ -86,23 +86,23 @@ function Example({ example }: ExampleProps) {
 
         <Separator className="mt-1" />
         <div className="pb-1 pt-2">
-          <div className="flex h-7 items-center justify-between space-x-1 text-xs">
+          <div className="flex flex-wrap items-center justify-between space-x-1 text-xs">
             <div className="flex-1 text-center">
               <p>{example.type}</p>
             </div>
 
-            <Separator orientation="vertical" decorative />
+            <Separator orientation="vertical" decorative className="h-7" />
             <div className="flex-1 text-center">
               <p>{getFileSize(example.fileSize)}</p>
             </div>
 
-            <Separator orientation="vertical" decorative />
+            <Separator orientation="vertical" decorative className="h-7" />
 
             <div className="flex-1 text-center">
               <p>{example.compression}</p>
             </div>
 
-            <Separator orientation="vertical" decorative />
+            <Separator orientation="vertical" decorative className="h-7" />
 
             <div
               className={cs("text-center", {
@@ -115,20 +115,20 @@ function Example({ example }: ExampleProps) {
               {example.bitRate && <p>{example.bitRate} kb/s</p>}
             </div>
 
-            <Separator orientation="vertical" />
+            <Separator orientation="vertical" decorative className="h-7" />
             <div className="flex-1 text-center">
               <p>{getkHz(example.sampleRate)}</p>
             </div>
 
-            <Separator orientation="vertical" />
+            <Separator orientation="vertical" decorative className="h-7" />
 
             <div className="flex-[6_1_0%] text-center">
-              <p>{JSON.stringify(example.browserCompatibility)}</p>
-
-              <label className="text-xxxs">Browser Compatibility</label>
+              <BrowserCompatibility
+                compatibility={example.browserCompatibility}
+              />
             </div>
 
-            <Separator orientation="vertical" />
+            <Separator orientation="vertical" decorative className="h-7" />
 
             <div className="flex-1 text-center">
               <p>
@@ -164,19 +164,36 @@ function Example({ example }: ExampleProps) {
             </div>
           </div>
         </div>
-
-        {/* compatibility grid */}
-        {/* 
-        type
-        file extension
-        compression - none, lossy, lossless
-        bit depth?
-        sample rate?
-        browser compatibility
-        links to more info
-
-      */}
       </div>
     </div>
   )
+}
+
+const BrowserCompatibility = ({
+  compatibility,
+}: {
+  compatibility: AudioExample["browserCompatibility"]
+}) => {
+  return (
+    <div className="flex flex-wrap items-center justify-between space-x-1 space-y-1 px-1">
+      <Compat browser="Chrome" compat={compatibility.chrome} />
+      <Compat browser="Firefox" compat={compatibility.firefox} />
+      <Compat browser="Safari" compat={compatibility.safari} />
+      <Compat browser="Edge" compat={compatibility.edge} />
+      <Compat browser="iOS" compat={compatibility.ios} />
+      <Compat browser="Android" compat={compatibility.android} />
+    </div>
+  )
+}
+
+const Compat = ({ browser, compat }: { browser: string; compat?: string }) => {
+  const classNames = cs("text-xxs px-1.5 py-0.5 rounded-md", {
+    "bg-emerald-200": compat === "yes",
+    "bg-rose-200": compat === "no" || !compat,
+  })
+  return <p className={classNames}>{browser}</p>
+}
+
+function compatibleText(compatable?: string) {
+  return compatable === "yes" ? "Yes" : "No"
 }
