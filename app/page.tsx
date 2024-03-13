@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function IndexPage() {
   return (
     <section className="flex w-full pb-8 pt-2 md:py-1">
@@ -13,7 +15,9 @@ export default function IndexPage() {
           applications that use audio.
         </p>
         <br />
-        <h2 className="font-bold">Playback</h2>
+        <Link href="/playback">
+          <h2 className="font-bold">Playback</h2>
+        </Link>
         <p className="text-sm">
           A collection of audio examples, each with a different format and
           compression type. Each example has a detailed breakdown of its
@@ -41,7 +45,9 @@ export default function IndexPage() {
           of format depending on what you want to achieve with your audio.
         </p>
         <br />
-        <h2 className="font-bold">Recording</h2>
+        <Link href="/recording">
+          <h2 className="font-bold">Recording</h2>
+        </Link>
         <p className="text-sm">Coming soon</p>
         {/* <p className="text-sm">
           Recording

@@ -1,11 +1,6 @@
-import Link from "next/link"
-
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 
 import { SidebarButton } from "./sidebar-button"
-
-// import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
