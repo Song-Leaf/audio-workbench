@@ -6,9 +6,7 @@
 import {
   IMediaRecorder,
   MediaRecorder as MediaRecorderPolyfill,
-  register,
 } from "extendable-media-recorder"
-import { connect } from "extendable-media-recorder-wav-encoder"
 import BasePlugin, {
   type BasePluginEvents,
 } from "wavesurfer.js/dist//base-plugin.js"
@@ -56,8 +54,6 @@ const MIME_TYPES = [
   "audio/mp4",
   "audio/mp3",
 ]
-const findSupportedMimeType = () =>
-  MIME_TYPES.find((mimeType) => MediaRecorderPolyfill.isTypeSupported(mimeType))
 
 class RecordPlugin extends BasePlugin<RecordPluginEvents, RecordPluginOptions> {
   private stream: MediaStream | null = null
@@ -182,8 +178,12 @@ class RecordPlugin extends BasePlugin<RecordPluginEvents, RecordPluginOptions> {
   ): Promise<MediaStream> {
     let stream: MediaStream
     try {
+      const connect = (await import("extendable-media-recorder-wav-encoder"))
+        .connect
       const con = await connect()
       console.log(con)
+
+      const register = (await import("extendable-media-recorder")).register
 
       await register(con)
       stream = await navigator.mediaDevices.getUserMedia({
@@ -214,6 +214,13 @@ class RecordPlugin extends BasePlugin<RecordPluginEvents, RecordPluginOptions> {
   /** Start recording audio from the microphone */
   public async startRecording(options?: RecordPluginDeviceOptions) {
     const stream = this.stream || (await this.startMic(options))
+
+    const MediaRecorderPolyfill = (await import("extendable-media-recorder"))
+      .MediaRecorder
+    const findSupportedMimeType = () =>
+      MIME_TYPES.find((mimeType) =>
+        MediaRecorderPolyfill.isTypeSupported(mimeType)
+      )
 
     this.dataWindow = null
     const mediaRecorder =
