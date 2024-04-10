@@ -286,7 +286,8 @@ class RecordPlugin extends BasePlugin<RecordPluginEvents, RecordPluginOptions> {
   public pauseRecording() {
     if (this.isRecording()) {
       this.isWaveformPaused = true
-      this.mediaRecorder?.requestData()
+      // TODO: fix this in the polyfill
+      // this.mediaRecorder?.requestData?.()
       this.mediaRecorder?.pause()
       this.timer.stop()
       this.lastDuration = this.duration
