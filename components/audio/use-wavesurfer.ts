@@ -1,15 +1,15 @@
+"use client"
+
 import { MutableRefObject, useEffect, useState } from "react"
 import WaveSurfer, { WaveSurferOptions } from "wavesurfer.js"
-import RecordPlugin, {
-  RecordPluginOptions,
-} from "wavesurfer.js/dist/plugins/record.js"
+
+import RecordPlugin, { RecordPluginOptions } from "./wavesurfer-record-plugin"
 
 export type OnRecordEndFn = (result?: { blob: Blob; url: string }) => void
 
 export const useWavesurfer = (
   containerRef: MutableRefObject<HTMLElement | null>,
-  url: string,
-  options: Omit<WaveSurferOptions, "container" | "url">
+  options: Omit<WaveSurferOptions, "container">
 ): [WaveSurfer | null, boolean] => {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null)
   const [error, setError] = useState<boolean>(false)
@@ -19,22 +19,27 @@ export const useWavesurfer = (
   useEffect(() => {
     if (!containerRef?.current) return
 
+    const url = `${options.url}`
+
     const ws = WaveSurfer.create({
       ...options,
+      url: undefined,
       container: containerRef.current,
     })
 
-    ws.load(url).catch((e: Error) => {
-      setError(true)
-      console.error("Failed to load audio", e)
-    })
+    if (url) {
+      ws.load(url).catch((e: Error) => {
+        setError(true)
+        console.error("Failed to load audio", e)
+      })
+    }
 
     setWavesurfer(ws)
 
     return () => {
       ws.destroy()
     }
-  }, [url, containerRef, options])
+  }, [options.url, containerRef])
 
   return [wavesurfer, error]
 }

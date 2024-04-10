@@ -36,7 +36,10 @@ export const AudioPlayerSimple: React.FC<AudioPlayerSimpleProps> = ({
   loading,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [wavesurfer, error] = useWavesurfer(containerRef, url, initialOptions)
+  const [wavesurfer, error] = useWavesurfer(containerRef, {
+    ...initialOptions,
+    url,
+  })
 
   const [isPlaying, setIsPlaying] = useState(false)
   const [ready, setReady] = useState(false)
