@@ -13,11 +13,36 @@ export default function IndexPage() {
     { id: string; blob: Blob; url: string }[]
   >([])
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          Recording
-        </h1>
+    <section className="grid items-center gap-2 px-1 pb-8 pt-2 md:py-1">
+      <div className="flex w-full flex-col items-start gap-2">
+        <p className="w-full rounded-lg bg-muted p-3 text-sm text-muted-foreground">
+          Simply put there is no built-in cross browser way to record audio to a
+          common format.
+          <br />
+          <br />
+          The MediaRecorder API is supported in most modern browsers, but does
+          encode audio in any shared codec. This means that Chrome may support
+          recording and encoding audio with the webm format, and Safari may not
+          support playback of that type. Let alone you may want to record audio
+          in a different format like wav or mp3 which may not be supported by
+          the browser at all.
+          <br />
+          <br />
+          <strong>
+            <i>However,</i>
+          </strong>{" "}
+          there are polyfills and libraries that can help you record audio in
+          the browser, and this example uses the{" "}
+          <a
+            href="https://github.com/chrisguttandin/extendable-media-recorder"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary underline"
+          >
+            extendable-media-recorder
+          </a>{" "}
+          to record to wav format.
+        </p>
       </div>
 
       <AudioRecorder
